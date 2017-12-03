@@ -72,7 +72,7 @@ public class Interpreter {
 		// handle LET keyword
 		String[] commands = line.split(" ");
 		Action suffixAction = null;
-		Action suffixPrint = null;
+		Action suffixPrint = new ConsumeAction();
 		if (alwaysPrint) {
 			suffixPrint = new PrintAction();
 		}
@@ -132,9 +132,7 @@ public class Interpreter {
 		}
 
 		// finish print handling
-		if (suffixPrint != null) {
-			actions.add(suffixPrint);
-		}
+		actions.add(suffixPrint);
 
 		return actions;
 	}
@@ -157,11 +155,9 @@ public class Interpreter {
 		}
 
 		if (this.stack.size() > 0) {
-			int size = this.stack.size();
-			if (alwaysPrint) {
-				size += 1;
-			}
-			throw new RuntimeException(size + " elements in stack after evaluation");
+			// note: size here is always off by one because the interpreter always consumes something
+			// from the stack after each line
+			throw new RuntimeException((this.stack.size() + 1) + " elements in stack after evaluation");
 		}
 
 		if (alwaysPrint || line.contains("PRINT")) {
