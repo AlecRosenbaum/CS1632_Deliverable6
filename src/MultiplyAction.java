@@ -5,4 +5,8 @@ public class MultiplyAction implements Action {
 		BigInteger val = interpreter.pop().multiply(interpreter.pop());
 		return interpreter.push(val).toString();
 	}
+
+	public String getOperator() {
+		return "*";
+	}
 }

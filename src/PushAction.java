@@ -10,4 +10,8 @@ public class PushAction implements Action {
 	public String apply(Interpreter interpreter) {
 		return interpreter.push(this.val).toString();
 	}
+
+	public String getOperator() {
+		return "";
+	}
 }

@@ -2,6 +2,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Stack;
+import java.util.EmptyStackException;
 import java.math.BigInteger;
 import java.lang.NumberFormatException;
 
@@ -14,7 +15,7 @@ public class Interpreter {
 	protected Stack<BigInteger> stack;
 	protected HashMap<String, BigInteger> vars;
 	protected Input input;
-	
+
 	/**
 	 * Constructs the object.
 	 *
@@ -65,63 +66,74 @@ public class Interpreter {
 	 *
 	 * @return     a list of actions
 	 */
-	public ArrayList<Action> parse(String line) {
+	public ArrayList<Action> parse(String line, boolean alwaysPrint) {
 		ArrayList<Action> actions = new ArrayList<>();
-		
+
 		// handle LET keyword
 		String[] commands = line.split(" ");
 		Action suffixAction = null;
+		Action suffixPrint = null;
+		if (alwaysPrint) {
+			suffixPrint = new PrintAction();
+		}
 		if (commands[0].equals("PRINT")) {
-			System.out.println(this.stack.toString());
-			suffixAction = new PrintAction();
+			suffixPrint = new PrintAction();
 			commands = Arrays.copyOfRange(commands, 1, commands.length);
 		} else if (commands.length > 1 && commands[0].equals("LET")) {
 			suffixAction = new LetAction(commands[1]);
 			commands = Arrays.copyOfRange(commands, 2, commands.length);
 		}
-		
+
 		// parse rest of command
 		for (String str : commands) {
 			switch (str) {
-				case "":
-					break;
-				case "+":
-					actions.add(new AddAction());
-					break;
-				case "-":
-					actions.add(new SubtractAction());
-					break;
-				case "*":
-					actions.add(new MultiplyAction());
-					break;
-				case "/":
-					actions.add(new DivideAction());
-					break;
-				case "QUIT":
-					throw new RuntimeException("Exiting...");
-				case "PRINT":
-					break;
-				case "LET":
-					throw new RuntimeException("Unable to Parse Command.");
-				default:
-					BigInteger val = null;
-					try {
-						val = new BigInteger(str);
-					} catch (NumberFormatException e) {
-						val = this.vars.get(str);
-					}
+			case "":
+				break;
+			case "+":
+				actions.add(new AddAction());
+				break;
+			case "-":
+				actions.add(new SubtractAction());
+				break;
+			case "*":
+				actions.add(new MultiplyAction());
+				break;
+			case "/":
+				actions.add(new DivideAction());
+				break;
+			case "QUIT":
+				throw new RuntimeException("Exiting...");
+			case "PRINT":
+			case "LET":
+				throw new RuntimeException("Could not evaluate expression");
+			default:
+				BigInteger val = null;
+				try {
+					val = new BigInteger(str);
+				} catch (NumberFormatException e) {
+					val = this.vars.get(str);
+				}
 
-					if (val == null) {
+				if (val == null) {
+					if (str.length() == 1) {
 						throw new RuntimeException("Variable " + str + " is not initialized!");
+					} else {
+						throw new RuntimeException("Unknown keyword " + str);
 					}
+				}
 
-					actions.add(new PushAction(val));
+				actions.add(new PushAction(val));
 			}
 		}
 
-		// finish LET/PRINT handling
+		// finish suffix action handling
 		if (suffixAction != null) {
 			actions.add(suffixAction);
+		}
+
+		// finish print handling
+		if (suffixPrint != null) {
+			actions.add(suffixPrint);
 		}
 
 		return actions;
@@ -134,16 +146,28 @@ public class Interpreter {
 	 *
 	 * @return     string to print as the result of these actions
 	 */
-	public String interpret(String line) {
+	public String interpret(String line, boolean alwaysPrint) {
 		String print = "";
-		for (Action a : this.parse(line)) {
+		for (Action a : this.parse(line, alwaysPrint)) {
 			try {
 				print = a.apply(this);
-			} catch (RuntimeException e) {
-				print = e.getMessage();
-				break;
+			} catch (EmptyStackException e) {
+				throw new RuntimeException("Operator " + a.getOperator() + " applied to empty stack");
 			}
 		}
-		return print;
+
+		if (this.stack.size() > 0) {
+			int size = this.stack.size();
+			if (alwaysPrint) {
+				size += 1;
+			}
+			throw new RuntimeException(size + " elements in stack after evaluation");
+		}
+
+		if (alwaysPrint || line.contains("PRINT")) {
+			return print;
+		} else {
+			return null;
+		}
 	}
 }

@@ -8,6 +8,11 @@ public class LetAction implements Action {
 	}
 
 	public String apply(Interpreter interpreter) {
-		return interpreter.setVariable(varName, interpreter.pop()).toString();
+		BigInteger val = interpreter.setVariable(varName, interpreter.pop());
+		return interpreter.push(val).toString();
+	}
+
+	public String getOperator() {
+		return "LET";
 	}
 }

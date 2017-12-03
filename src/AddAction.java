@@ -5,4 +5,8 @@ public class AddAction implements Action {
 		BigInteger val = interpreter.pop().add(interpreter.pop());
 		return interpreter.push(val).toString();
 	}
+
+	public String getOperator() {
+		return "+";
+	}
 }
