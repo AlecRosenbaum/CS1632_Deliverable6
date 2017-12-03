@@ -14,7 +14,7 @@ public class RPN {
 				line++;
 			} catch (RuntimeException e) {
 				System.err.println("Line " + line + ": " + e.getMessage());
-				break; // TODO catch individual exceptions for different exit codes
+				return 1; // TODO catch individual exceptions for different exit codes
 			}
 			if (output != null) {
 				System.out.println(output);
@@ -41,7 +41,7 @@ public class RPN {
 				line++;
 			} catch (RuntimeException e) {
 				System.err.println("Line " + line + ": " + e.getMessage());
-				break; // TODO catch individual exceptions for different exit codes
+				return 1; // TODO catch individual exceptions for different exit codes
 			}
 			if (output != null) {
 				System.out.println(output);
@@ -54,7 +54,14 @@ public class RPN {
 		if (args.length == 0) {
 			System.exit(runREPL());
 		} else {
-			System.exit(runFile(new File(args[0])));
+			int ret = 0;
+			for (String arg : args) {
+				ret = runFile(new File(arg));
+				if (ret != 0) {
+					break;
+				}
+			}
+			System.exit(ret);
 		}
 	}
 }
