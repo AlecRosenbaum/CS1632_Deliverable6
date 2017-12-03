@@ -1,0 +1,7 @@
+import java.math.BigInteger;
+
+public class PrintAction implements Action {
+	public String apply(Interpreter interpreter) {
+		return interpreter.pop().toString();
+	}
+}

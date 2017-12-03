@@ -70,9 +70,13 @@ public class Interpreter {
 		
 		// handle LET keyword
 		String[] commands = line.split(" ");
-		Action letAction = null;
-		if (commands.length > 1 && commands[0].equals("LET")) {
-			letAction = new LetAction(commands[1]);
+		Action suffixAction = null;
+		if (commands[0].equals("PRINT")) {
+			System.out.println(this.stack.toString());
+			suffixAction = new PrintAction();
+			commands = Arrays.copyOfRange(commands, 1, commands.length);
+		} else if (commands.length > 1 && commands[0].equals("LET")) {
+			suffixAction = new LetAction(commands[1]);
 			commands = Arrays.copyOfRange(commands, 2, commands.length);
 		}
 		
@@ -115,9 +119,9 @@ public class Interpreter {
 			}
 		}
 
-		// finish LET handling
-		if (letAction != null) {
-			actions.add(letAction);
+		// finish LET/PRINT handling
+		if (suffixAction != null) {
+			actions.add(suffixAction);
 		}
 
 		return actions;
