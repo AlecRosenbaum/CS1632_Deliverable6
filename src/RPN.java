@@ -4,18 +4,19 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 public class RPN {
+	protected static int line = 1;
+
 	public static int runREPL() {
 		Input in = new REPLInput();
 		Interpreter interpreter = new Interpreter();
 
 		String input, output;
-		int line = 1;
 		while ((input = in.getSanitized()) != null) {
 			try {
 				output = interpreter.interpret(input, true);
-				line++;
+				RPN.line++;
 			} catch (RuntimeException e) {
-				System.err.println("Line " + line + ": " + e.getMessage());
+				System.err.println("Line " + RPN.line + ": " + e.getMessage());
 				return 1; // TODO catch individual exceptions for different exit codes
 			}
 			if (output != null) {
@@ -36,13 +37,12 @@ public class RPN {
 		Interpreter interpreter = new Interpreter();
 
 		String input, output;
-		int line = 1;
 		while ((input = in.getSanitized()) != null) {
 			try {
 				output = interpreter.interpret(input, false);
-				line++;
+				RPN.line++;
 			} catch (RuntimeException e) {
-				System.err.println("Line " + line + ": " + e.getMessage());
+				System.err.println("Line " + RPN.line + ": " + e.getMessage());
 				return 1; // TODO catch individual exceptions for different exit codes
 			}
 			if (output != null) {
