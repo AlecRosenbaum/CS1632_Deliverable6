@@ -104,7 +104,7 @@ public class Interpreter {
 				actions.add(new DivideAction());
 				break;
 			case "QUIT":
-				throw new RuntimeException("Exiting...");
+				throw new QuitException("");
 			case "PRINT":
 			case "LET":
 				throw new RuntimeException("Could not evaluate expression");
@@ -118,9 +118,9 @@ public class Interpreter {
 
 				if (val == null) {
 					if (str.length() == 1) {
-						throw new RuntimeException("Variable " + str + " is not initialized!");
+						throw new UninitializedVariableException("Variable " + str + " is not initialized!");
 					} else {
-						throw new RuntimeException("Unknown keyword " + str);
+						throw new InvalidKeywordException("Unknown keyword " + str);
 					}
 				}
 
@@ -152,14 +152,14 @@ public class Interpreter {
 			try {
 				print = a.apply(this);
 			} catch (EmptyStackException e) {
-				throw new RuntimeException("Operator " + a.getOperator() + " applied to empty stack");
+				throw new OperatorAppliedToEmptyStackException("Operator " + a.getOperator() + " applied to empty stack");
 			}
 		}
 
 		if (this.stack.size() > 0) {
 			// note: size here is always off by one because the interpreter always consumes something
 			// from the stack after each line
-			throw new RuntimeException((this.stack.size() + 1) + " elements in stack after evaluation");
+			throw new StackSizeNonZeroException((this.stack.size() + 1) + " elements in stack after evaluation");
 		}
 
 		if (alwaysPrint || line.contains("PRINT")) {

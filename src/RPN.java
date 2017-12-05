@@ -15,6 +15,20 @@ public class RPN {
 			try {
 				output = interpreter.interpret(input, true);
 				RPN.line++;
+			} catch (UninitializedVariableException e) {
+				System.err.println("Line " + RPN.line + ": " + e.getMessage());
+				return 1;
+			} catch (OperatorAppliedToEmptyStackException e) {
+				System.err.println("Line " + RPN.line + ": " + e.getMessage());
+				return 2;
+			} catch (StackSizeNonZeroException e) {
+				System.err.println("Line " + RPN.line + ": " + e.getMessage());
+				return 3;
+			} catch (InvalidKeywordException e) {
+				System.err.println("Line " + RPN.line + ": " + e.getMessage());
+				return 4;
+			} catch (QuitException e) {
+				return 0;
 			} catch (RuntimeException e) {
 				System.err.println("Line " + RPN.line + ": " + e.getMessage());
 				return 1; // TODO catch individual exceptions for different exit codes
