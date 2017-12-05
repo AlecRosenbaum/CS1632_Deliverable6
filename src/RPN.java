@@ -20,13 +20,13 @@ public class RPN {
 				output = null;
 			} catch (OperatorAppliedToEmptyStackException e) {
 				System.err.println("Line " + RPN.line + ": " + e.getMessage());
-				return 2;
+				output = null;
 			} catch (StackSizeNonZeroException e) {
 				System.err.println("Line " + RPN.line + ": " + e.getMessage());
-				return 3;
+				output = null;
 			} catch (InvalidKeywordException e) {
 				System.err.println("Line " + RPN.line + ": " + e.getMessage());
-				return 4;
+				output = null;
 			} catch (QuitException e) {
 				return 0;
 			} catch (RuntimeException e) {

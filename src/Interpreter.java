@@ -134,7 +134,9 @@ public class Interpreter {
 		}
 
 		// finish print handling
-		actions.add(suffixPrint);
+		if (line.length() > 0) {
+			actions.add(suffixPrint);
+		}
 
 		return actions;
 	}
