@@ -10,10 +10,11 @@ public class LetAction implements Action {
 	}
 
 	public String apply(Interpreter interpreter) {
-		BigInteger val = interpreter.setVariable(varName, interpreter.pop());
+		BigInteger inVal = interpreter.pop();
 		if (interpreter.stackSize() > 0) {
-			throw new RuntimeException("Could not evaluate expression");
+			throw new StackSizeNonZeroException("Malformed LET expression");
 		}
+		BigInteger val = interpreter.setVariable(varName, inVal);
 		return interpreter.push(val).toString();
 	}
 
