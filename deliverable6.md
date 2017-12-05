@@ -39,14 +39,14 @@ Detailed requirements are listed below.
 
 ## Requirements
 
-1. The program shall be named RPN and should be runnable from the command line using the command "java RPN".
-1. Tokens shall be numbers, variable names, operators, or one of the keywords QUIT, LET, or PRINT.
-1. A number shall consist of one or more digits.  All numbers shall be arbitrary-precision (i.e., there shall be no integer overflow - 999999999999999999999999999 shall be considered a valid number and stored as such).
-1. Variable names can be a single letter (A-Z) and are case-insensitive (e.g., `a` and `A` refer to the same variable).
-1. Operators can be +, -, /, or *, for add, subtract, divide, and multiply, respectively.
+<-- 1. The program shall be named RPN and should be runnable from the command line using the command "java RPN". -->
+<-- 1. Tokens shall be numbers, variable names, operators, or one of the keywords QUIT, LET, or PRINT. -->
+<-- 1. A number shall consist of one or more digits.  All numbers shall be arbitrary-precision (i.e., there shall be no integer overflow - 999999999999999999999999999 shall be considered a valid number and stored as such). -->
+<-- 1. Variable names can be a single letter (A-Z) and are case-insensitive (e.g., `a` and `A` refer to the same variable). -->
+<-- 1. Operators can be +, -, /, or *, for add, subtract, divide, and multiply, respectively. -->
 1. The keyword QUIT causes the program to end.
 1. Any lines or tokens after the QUIT keyword are ignored.
-1. The keyword LET is followed by a single-letter variable, then an RPN expression.  The RPN expression is evaluated and the value of the variable is set to it. 
+<-- 1. The keyword LET is followed by a single-letter variable, then an RPN expression.  The RPN expression is evaluated and the value of the variable is set to it. -->
 1. The keyword PRINT is followed by an expression, and the interpreter shall print the result of that expression to standard output (stdout).
 1. Keywords shall be case-insensitive (e.g. `print`, `PRINT`, or `pRiNt` are interchangeable)
 1. Keywords shall only start a line (e.g., you cannot have a line such as "1 2 + PRINT 3")
