@@ -61,6 +61,10 @@ public class Interpreter {
 		return this.stack.pop();
 	}
 
+	public int stackSize() {
+		return this.stack.size();
+	}
+
 	/**
 	 * parse line into a list of actions
 	 *
