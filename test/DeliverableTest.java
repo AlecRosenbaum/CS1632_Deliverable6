@@ -31,5 +31,25 @@ public class DeliverableTest {
     @Rule
     public final SystemOutRule systemOutRule = new SystemOutRule().enableLog();
 
+    // Assert that creating a new Interpreter instance does not return null
+    @Test
+    public void testLargeNumber1() {
+        assertEquals("999999999999999998000000000000000001",_interp.interpret("999999999999999999 999999999999999999 *",true));
+    }
+
+    // Assert that creating a new Interpreter instance does not return null
+    @Test
+    public void testLargeNumber2() {
+        assertEquals("-999999999999999999999999999",_interp.interpret("LET a 0 999999999999999999999999999 -",true));
+    }
+    
+    // Assert that creating a new Interpreter instance does not return null
+    @Test
+    public void testLargeNumber3() {
+        _interp.interpret("LET a 0 999999999999999999999999999 -",true);
+        _interp.interpret("LET b -1",true);
+        assertEquals("-1000000000000000000000000000",_interp.interpret("a b +",true));
+    }
+    
 
 }
