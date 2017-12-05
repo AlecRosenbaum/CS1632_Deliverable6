@@ -1,3 +1,5 @@
+package rpn;
+
 import java.util.Scanner;
 
 public class REPLInput extends Input {
