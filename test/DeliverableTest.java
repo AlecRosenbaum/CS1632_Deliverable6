@@ -32,24 +32,26 @@ public class DeliverableTest {
     //This allows us to read directly from console
     @Rule
     public final SystemOutRule systemOutRule = new SystemOutRule().enableLog();
+    //This allows is to read 
     @Rule
     public final SystemErrRule systemErrRule = new SystemErrRule().enableLog();
+    //This allows us to deal with the system exit calls in the main program 
     @Rule
     public final ExpectedSystemExit exit = ExpectedSystemExit.none();
 
-    // Assert that creating a new Interpreter instance does not return null
+    // Test and see that large numbers can be handled by the system 
     @Test
     public void testLargeNumber1() {
         assertEquals("999999999999999998000000000000000001", _interp.interpret("999999999999999999 999999999999999999 *", true));
     }
 
-    // Assert that creating a new Interpreter instance does not return null
+    // Test and see that large negative numbers can be handled by the system     
     @Test
     public void testLargeNumber2() {
         assertEquals("-999999999999999999999999999", _interp.interpret("LET a 0 999999999999999999999999999 -", true));
     }
 
-    // Assert that creating a new Interpreter instance does not return null
+    // Test and see that large numbers can be handled by the system and that they can be assigned to variables
     @Test
     public void testLargeNumber3() {
         _interp.interpret("LET a 0 999999999999999999999999999 -", true);
@@ -398,18 +400,29 @@ public class DeliverableTest {
     @Test
     public void testMultipleFiles1() {
         exit.expectSystemExitWithStatus(3);
-        RPN.main(new String[] {"resources/Bad.rpn","resources/File1.rpn"});
+        RPN.main(new String[] {"resources/Bad.rpn", "resources/File1.rpn"});
     }
 
     @Test
     public void testMultipleFiles2() {
         exit.expectSystemExitWithStatus(2);
-        RPN.main(new String[] {"resources/Bad3.rpn","resources/File1.rpn"});
+        RPN.main(new String[] {"resources/Bad3.rpn", "resources/File1.rpn"});
     }
 
     @Test
     public void testEmptyFile1() {
         exit.expectSystemExitWithStatus(0);
-        RPN.main(new String[] {"resources/Empty.rpn","resources/File1.rpn"});
+        RPN.main(new String[] {"resources/Empty.rpn", "resources/File1.rpn"});
+    }
+
+    @Test
+    public void testLineCount1() {
+        exit.expectSystemExitWithStatus(3);
+        exit.checkAssertionAfterwards(new Assertion() {
+            public void checkAssertion() {
+                assertEquals("Line 6: 3 elements in stack after evaluation\n", systemErrRule.getLog());
+            }
+        });
+        RPN.main(new String[] {"resources/File1.rpn", "resources/Bad.rpn"});
     }
 }
