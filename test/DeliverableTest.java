@@ -59,7 +59,7 @@ public class DeliverableTest {
         assertEquals("-1000000000000000000000000000", _interp.interpret("a b +", true));
     }
 
-    // Assert that creating a new Interpreter instance does not return null
+    // Test and see that case sensitivity is handled in the program
     @Test
     public void testCaseSensitive1() {
         _interp.interpret("LET A 0 999999999999999999999999999 -", true);
@@ -67,7 +67,7 @@ public class DeliverableTest {
         assertEquals("-1000000000000000000000000000", _interp.interpret(Input.sanitize("a b +"), true));
     }
 
-    // Assert that creating a new Interpreter instance does not return null
+    // Test and see that case sensitivity is handled in the program with multicharacter variable names 
     @Test
     public void testCaseSensitive2() {
         _interp.interpret("LET ABBA 0 999999999999999999999999999 -", true);
@@ -75,7 +75,7 @@ public class DeliverableTest {
         assertEquals("-1000000000000000000000000000", _interp.interpret(Input.sanitize("aBbA bAbY +"), true));
     }
 
-    // Assert that creating a new Interpreter instance does not return null
+    // Test and see that case sensitivity is handled in the program with multicharacter variable names 
     @Test
     public void testCaseSensitive3() {
         _interp.interpret("LET WACKY 0 999999999999999999999999999 -", true);
@@ -83,37 +83,37 @@ public class DeliverableTest {
         assertEquals("-1000000000000000000000000000", _interp.interpret(Input.sanitize("wacky bArBaz +"), true));
     }
 
-    // Assert that creating a new Interpreter instance does not return null
+    // Test and see that chained opperations work
     @Test
     public void testOperator1() {
         assertEquals("125", _interp.interpret("10 10 * 5 5 * 0 0 * + +", true));
     }
 
-    // Assert that creating a new Interpreter instance does not return null
+    // Test and see that + opperations work
     @Test
     public void testOperator2() {
         assertEquals("7", _interp.interpret("4 3 +", true));
     }
 
-    // Assert that creating a new Interpreter instance does not return null
+    // Test and see that / opperations work
     @Test
     public void testOperator3() {
         assertEquals("5", _interp.interpret("10 2 /", true));
     }
 
-    // Assert that creating a new Interpreter instance does not return null
+    // Test and see that * opperations work
     @Test
     public void testOperator4() {
         assertEquals("20", _interp.interpret("10 2 *", true));
     }
 
-    // Assert that creating a new Interpreter instance does not return null
+    // Test and see that - opperations work
     @Test
     public void testOperator5() {
-        assertEquals("12", _interp.interpret("10 2 +", true));
+        assertEquals("8", _interp.interpret("10 2 -", true));
     }
 
-    //Throws quit exception
+    //Test and see that the QUIT command works
     @Test
     public void testQuit1() throws Exception {
         try {
@@ -125,7 +125,7 @@ public class DeliverableTest {
         }
     }
 
-    //Throws quit exception
+    //Test and see that anything after the QUIT command is ignored 
     @Test
     public void testQuit2() throws Exception {
         try {
@@ -137,7 +137,7 @@ public class DeliverableTest {
         }
     }
 
-    // Assert that creating a new Interpreter instance does not return null
+    // Test and see that variables work as expected
     @Test
     public void testVars1() {
         _interp.interpret("LET a 10", true);
@@ -145,7 +145,7 @@ public class DeliverableTest {
         assertEquals("110", _interp.interpret("a b +", true));
     }
 
-    // Assert that creating a new Interpreter instance does not return null
+    // Test and see that variables work as expected with long names
     @Test
     public void testVars2() {
         _interp.interpret("LET wackyvariablename 10", true);
@@ -171,7 +171,7 @@ public class DeliverableTest {
         assertNull(_interp.interpret("a b +", false));
     }
 
-    // Assert that creating a new Interpreter instance does not return null
+    // Test and see that variables work as expected with case sensitivity and printing
     @Test
     public void testCaseSensitivePrint1() {
         _interp.interpret("LET A 10", true);
@@ -179,7 +179,7 @@ public class DeliverableTest {
         assertNotNull(_interp.interpret(Input.sanitize("print A B +"), false));
     }
 
-    // Assert that creating a new Interpreter instance does not return null
+    // Test and see that variables work as expected with case sensitivity and printing
     @Test
     public void testCaseSensitivePrint2() {
         _interp.interpret("LET A 10", true);
@@ -187,7 +187,7 @@ public class DeliverableTest {
         assertNotNull(_interp.interpret(Input.sanitize("PRINT a B +"), false));
     }
 
-    // Assert that creating a new Interpreter instance does not return null
+    // Test and see that variables work as expected with case sensitivity and printing
     @Test
     public void testCaseSensitivePrint3() {
         _interp.interpret("LET A 10", true);
@@ -195,6 +195,7 @@ public class DeliverableTest {
         assertNotNull(_interp.interpret(Input.sanitize("pRiNt A b +"), false));
     }
 
+    // Test and see that keywords that are out of order return an error
     @Test
     public void testKeywordPlacement1() throws Exception {
         try {
@@ -206,6 +207,7 @@ public class DeliverableTest {
         }
     }
 
+    // Test and see that keywords that are out of order return an error
     @Test
     public void testKeywordPlacement2() throws Exception {
         try {
@@ -217,6 +219,7 @@ public class DeliverableTest {
         }
     }
 
+    // Test and see that a LET without any variable name will return an error
     @Test
     public void testEmptyLet1() throws Exception {
         try {
@@ -228,6 +231,7 @@ public class DeliverableTest {
         }
     }
 
+    // Test and see that a LET without any variable value will return an error
     @Test
     public void testEmptyLet2() throws Exception {
         try {
@@ -239,6 +243,7 @@ public class DeliverableTest {
         }
     }
 
+    // Test and see that a missing variable with error and operation 
     @Test
     public void testMissingVar1() throws Exception {
         try {
@@ -250,6 +255,7 @@ public class DeliverableTest {
         }
     }
 
+    // Test and see that a missing variable with error and operation in reverse order 
     @Test
     public void testMissingVar2() throws Exception {
         try {
@@ -261,6 +267,7 @@ public class DeliverableTest {
         }
     }
 
+    // Test and see that bad operation will return a proper error message
     @Test
     public void testBadOp1() throws Exception {
         try {
@@ -272,6 +279,7 @@ public class DeliverableTest {
         }
     }
 
+    // Test and see that bad operation will return a proper error message
     @Test
     public void testBadOp2() throws Exception {
         try {
@@ -283,6 +291,7 @@ public class DeliverableTest {
         }
     }
 
+    // Test and see that bad operation will return a proper error message
     @Test
     public void testBadOp3() throws Exception {
         try {
@@ -292,6 +301,7 @@ public class DeliverableTest {
         }
     }
 
+    // Test and see that bad operation will return a proper error message
     @Test
     public void testBadOp4() throws Exception {
         try {
@@ -303,6 +313,7 @@ public class DeliverableTest {
         }
     }
 
+    // Test and see that bad operation will return a proper error message
     @Test
     public void testBadOp5() throws Exception {
         try {
@@ -314,6 +325,7 @@ public class DeliverableTest {
         }
     }
 
+    // Test and see that the expected results are returned for each of the different supplied bad testing files
     @Test
     public void testBadFiles1() {
         File theFile = new File("resources/Bad.rpn");
@@ -321,12 +333,14 @@ public class DeliverableTest {
         assertEquals("Line 3: 3 elements in stack after evaluation\n", systemErrRule.getLog());
     }
 
+    // Test and see that the expected results are returned for each of the different supplied bad testing files
     @Test
     public void testBadFiles2() {
         File theFile = new File("resources/Bad.rpn");
         assertEquals(3, RPN.runFile(theFile));
     }
 
+    // Test and see that the expected results are returned for each of the different supplied bad testing files
     @Test
     public void testBadFiles3() {
         File theFile = new File("resources/Bad2.rpn");
@@ -334,12 +348,14 @@ public class DeliverableTest {
         assertEquals("Line 1: Unknown keyword QUOMBLE\n", systemErrRule.getLog());
     }
 
+    // Test and see that the expected results are returned for each of the different supplied bad testing files
     @Test
     public void testBadFiles4() {
         File theFile = new File("resources/Bad2.rpn");
         assertEquals(4, RPN.runFile(theFile));
     }
 
+    // Test and see that the expected results are returned for each of the different supplied bad testing files
     @Test
     public void testBadFiles5() {
         File theFile = new File("resources/Bad3.rpn");
@@ -347,12 +363,14 @@ public class DeliverableTest {
         assertEquals("Line 2: Operator + applied to empty stack\n", systemErrRule.getLog());
     }
 
+    // Test and see that the expected results are returned for each of the different supplied bad testing files
     @Test
     public void testBadFiles6() {
         File theFile = new File("resources/Bad3.rpn");
         assertEquals(2, RPN.runFile(theFile));
     }
 
+    // Test and see that the expected results are returned for each of the different supplied bad testing files
     @Test
     public void testBadFiles7() {
         File theFile = new File("resources/Bad4.rpn");
@@ -360,12 +378,14 @@ public class DeliverableTest {
         assertEquals("Line 3: Operator + applied to empty stack\n", systemErrRule.getLog());
     }
 
+    // Test and see that the expected results are returned for each of the different supplied bad testing files
     @Test
     public void testBadFiles8() {
         File theFile = new File("resources/Bad4.rpn");
         assertEquals(2, RPN.runFile(theFile));
     }
 
+    // Test and see that the expected results are returned for each of the different supplied bad testing files
     @Test
     public void testBadFiles9() {
         File theFile = new File("resources/Bad5.rpn");
@@ -373,12 +393,14 @@ public class DeliverableTest {
         assertEquals("Line 1: Variable B is not initialized!\n", systemErrRule.getLog());
     }
 
+    // Test and see that the expected results are returned for each of the different supplied bad testing files
     @Test
     public void testBadFiles10() {
         File theFile = new File("resources/Bad5.rpn");
         assertEquals(1, RPN.runFile(theFile));
     }
 
+    // Test and see that the expected results are returned for each of the different supplied bad testing files
     @Test
     public void testBadFiles11() {
         File theFile = new File("resources/Bad6.rpn");
@@ -386,35 +408,41 @@ public class DeliverableTest {
         assertEquals("Line 1: Could not evaluate expression\n", systemErrRule.getLog());
     }
 
+    // Test and see that the expected results are returned for each of the different supplied bad testing files
     @Test
     public void testBadFiles12() {
         File theFile = new File("resources/Bad6.rpn");
         assertEquals(5, RPN.runFile(theFile));
     }
 
+    // Test and see that the prompt value is set correctly to >
     @Test
     public void testPrompt1() {
         assertEquals(">", REPLInput.PROMPT);
     }
 
+    // Test and see that expected errors occur when multiple files are ran
     @Test
     public void testMultipleFiles1() {
         exit.expectSystemExitWithStatus(3);
         RPN.main(new String[] {"resources/Bad.rpn", "resources/File1.rpn"});
     }
 
+    // Test and see that expected errors occur when multiple files are ran
     @Test
     public void testMultipleFiles2() {
         exit.expectSystemExitWithStatus(2);
         RPN.main(new String[] {"resources/Bad3.rpn", "resources/File1.rpn"});
     }
 
+    // Test and see that an exmty file will be handled
     @Test
     public void testEmptyFile1() {
         exit.expectSystemExitWithStatus(0);
         RPN.main(new String[] {"resources/Empty.rpn", "resources/File1.rpn"});
     }
 
+    // Test and see that line count builds from file to file
     @Test
     public void testLineCount1() {
         exit.expectSystemExitWithStatus(3);
