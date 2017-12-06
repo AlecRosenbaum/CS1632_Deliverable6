@@ -3,8 +3,9 @@ package rpn;
 import java.util.Scanner;
 
 public class REPLInput extends Input {
+
 	protected Scanner scanner;
-    final static String PROMPT = ">";
+    static final String PROMPT = ">";
 
 	public REPLInput() {
 		System.out.println("Welcome to the REPL!");

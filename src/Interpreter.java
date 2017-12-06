@@ -1,12 +1,12 @@
 package rpn;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.Stack;
-import java.util.EmptyStackException;
-import java.math.BigInteger;
 import java.lang.NumberFormatException;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EmptyStackException;
+import java.util.HashMap;
+import java.util.Stack;
 
 /**
  * Class for inpterpreter.
@@ -20,8 +20,6 @@ public class Interpreter {
 
 	/**
 	 * Constructs the object.
-	 *
-	 * @param      input  The input
 	 */
 	public Interpreter() {
 		this.stack = new Stack<BigInteger>();
@@ -111,18 +109,19 @@ public class Interpreter {
 				throw new QuitException("");
 			case "PRINT":
 			case "LET":
-				throw new RuntimeException("Could not evaluate expression");
+				throw new OtherException("Could not evaluate expression");
 			default:
 				BigInteger val = null;
 				try {
 					val = new BigInteger(str);
-				} catch (NumberFormatException e) {
+				} catch (NumberFormatException ex) {
 					val = this.vars.get(str);
 				}
 
 				if (val == null) {
 					if (str.length() == 1) {
-						throw new UninitializedVariableException("Variable " + str + " is not initialized!");
+						String errStr = "Variable " + str + " is not initialized!";
+						throw new UninitializedVariableException(errStr);
 					} else {
 						throw new InvalidKeywordException("Unknown keyword " + str);
 					}
@@ -157,15 +156,17 @@ public class Interpreter {
 		for (Action a : this.parse(line, alwaysPrint)) {
 			try {
 				print = a.apply(this);
-			} catch (EmptyStackException e) {
-				throw new OperatorAppliedToEmptyStackException("Operator " + a.getOperator() + " applied to empty stack");
+			} catch (EmptyStackException ex) {
+				String errStr = "Operator " + a.getOperator() + " applied to empty stack";
+				throw new OperatorAppliedToEmptyStackException(errStr);
 			}
 		}
 
 		if (this.stack.size() > 0) {
 			// note: size here is always off by one because the interpreter always consumes something
 			// from the stack after each line
-			throw new StackSizeNonZeroException((this.stack.size() + 1) + " elements in stack after evaluation");
+			String errStr = (this.stack.size() + 1) + " elements in stack after evaluation";
+			throw new StackSizeNonZeroException(errStr);
 		}
 
 		if (alwaysPrint || line.contains("PRINT")) {
