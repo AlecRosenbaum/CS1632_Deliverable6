@@ -16,7 +16,6 @@ public class Interpreter {
 	// variable hashmap
 	protected Stack<BigInteger> stack;
 	protected HashMap<String, BigInteger> vars;
-	protected Input input;
 
 	/**
 	 * Constructs the object.
