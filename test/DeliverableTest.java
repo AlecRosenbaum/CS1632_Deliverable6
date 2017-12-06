@@ -149,8 +149,8 @@ public class DeliverableTest {
     @Test
     public void testVars2() {
         _interp.interpret("LET wackyvariablename 10", true);
-        _interp.interpret("LET wackyvariablename2 100", true);
-        assertEquals("1000", _interp.interpret("wackyvariablename wackyvariablename2 *", true));
+        _interp.interpret("LET wackyvariablenameTwo 100", true);
+        assertEquals("1000", _interp.interpret("wackyvariablename wackyvariablenameTwo *", true));
     }
 
     // Will return null if it does not send a print command

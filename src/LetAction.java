@@ -26,7 +26,7 @@ public class LetAction implements Action {
 	 */
 	public String apply(Interpreter interpreter) {
 		BigInteger inVal = interpreter.pop();
-		if (interpreter.stackSize() > 0) {
+		if (interpreter.stackSize() > 0 || !varName.matches("[a-zA-Z]+")) {
 			throw new StackSizeNonZeroException("Malformed LET expression");
 		}
 		BigInteger val = interpreter.setVariable(varName, inVal);
